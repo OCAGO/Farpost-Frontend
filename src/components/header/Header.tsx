@@ -1,13 +1,17 @@
-
 import LogIn from "../../assets/icons/log-in.svg?react";
 import SearchField from "../elements/search-field/SearchField";
 
-function Header() {
+interface Props {
+  isMessageVisible: boolean;
+}
+
+function Header({ isMessageVisible }: Props) {
+
   return (
-    <div className="flex justify-between items-center gap-10 mb-15 avg:mb-20">
+    <div className={`${isMessageVisible ? "mt-[70px]" : "mt-5"} flex justify-between items-center gap-10 mb-15 avg:mb-20 mx-5 xl:mx-25`}>
       <div className="flex-1 flex-col gap-2 justify-between w-[220px] flex avg:flex-row avg:items-center avg:justify-between avg:w-[60%]">
         <div className="flex items-end">
-          <a className="block shrink-0" href="#"><img className="w-[115px] h-auto" src="logo.svg" /></a>
+          <a className="block shrink-0" href="https://www.vl.ru/"><img className="w-[115px] h-auto" src="logo.svg" /></a>
           <a className="flex flex-col text-[18px] text-primary hover:text-primary-hover" href="#">
             <div>
               Отключение

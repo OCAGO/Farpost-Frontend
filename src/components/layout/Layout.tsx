@@ -1,11 +1,15 @@
-import type { PropsWithChildren } from "react";
+import { useState, type PropsWithChildren } from "react";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
+import Message from "../message/Message";
 
 function Layout({ children }: PropsWithChildren) {
+	const [isMessageVisible, setIsMessageVisible] = useState(true);
+	
 	return (
-		<div className="px-5 pt-5 text-[14px] font-sans xl:px-25">
-			<Header />
+		<div className="text-[14px] font-sans">
+			<Message isClick={isMessageVisible} setIsClick={setIsMessageVisible}/>
+			<Header isMessageVisible={isMessageVisible}/>
 			<main>
 				{children}
 			</main>

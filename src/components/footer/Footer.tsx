@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <div className="flex flex-col flex-wrap sm:flex-row [@media(min-width:1000px)]:justify-between justify-start items-start mb-[30px] gap-15">
+    <div className="flex flex-col flex-wrap sm:flex-row [@media(min-width:1000px)]:justify-between justify-start items-start mb-[30px] gap-15 mx-5 xl:mx-25">
       <div className="flex flex-col gap-[25px]">
         <h3 className="text-[16px]">Разделы</h3>
         <ul className="text-[12px] text-footer-text underline">
