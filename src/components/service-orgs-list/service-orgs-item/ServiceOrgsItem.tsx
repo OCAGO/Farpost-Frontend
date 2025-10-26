@@ -1,20 +1,8 @@
-import type { ReactNode } from "react";
+import { useRef, useState, useEffect } from "react";
 import ChevronDownIcon from "../../../assets/icons/chevron-down.svg?react";
 import ChevronUpIcon from "../../../assets/icons/chevron-up.svg?react";
-import Circle from "../../../assets/icons/circle.svg?react";
-
-interface Info {
-  id: number;
-  title: string;
-  value: string;
-}
-
-interface Item {
-  id: number;
-  name: string;
-  icon: ReactNode;
-  info: Info[];
-}
+import ItemInfo from "./ItemInfo";
+import type { Item } from "../../../types/service-orgs.types";
 
 interface Props {
   item: Item;
@@ -25,6 +13,17 @@ interface Props {
 function ServiceOrgsItem({ item, activeId, setActiveId }: Props) {
   const { id, name, icon, info } = item;
   const isOpen = activeId === id;
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      setHeight(contentRef.current?.scrollHeight || 0);
+    } else {
+      setHeight(0);
+    }
+  }, [isOpen]);
 
   return (
     <li className={`w-[332px] px-2.5 py-1.5 ${isOpen ? "bg-white rounded-[10px]" : "bg-auto"}`}>
@@ -41,24 +40,16 @@ function ServiceOrgsItem({ item, activeId, setActiveId }: Props) {
         </div>
       </button>
 
-      {isOpen && (
+      <div ref={contentRef} className="transition-all duration-500 ease-in-out overflow-hidden" style={{ maxHeight: `${height}px`, opacity: isOpen ? 1 : 0 }}>
         <div className="flex flex-col gap-[15px]">
           <ul className="flex flex-col gap-2.5 px-[7px] py-2.5">
-            {info.map((item) => (
-              <li key={item.id}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div><Circle className="size-[15px] fill-primary" /></div>
-                    <p className="leading-4">{item.title}</p>
-                  </div>
-                  <p className="leading-4 text-right font-bold">{item.value}</p>
-                </div>
-              </li>
+            {info.map((itemInfo) => (
+              <ItemInfo itemInfo = {itemInfo} color={item.name}/>
             ))}
           </ul>
           <a className="text-right text-btn hover:text-btn-hover underline" href="#">Подробнее</a>
         </div>
-      )}
+      </div>
     </li>
   );
 }
