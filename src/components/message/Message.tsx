@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MessageIcon from "../../assets/icons/attention.svg?react";
 import CloseIcon from "../../assets/icons/x.svg?react";
 
