@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
 function Layout({ children }: PropsWithChildren) {
 	return (
@@ -8,6 +9,8 @@ function Layout({ children }: PropsWithChildren) {
 			<main>
 				{children}
 			</main>
+			<hr className="my-10 h-px bg-line border-none"/>
+			<Footer />
 		</div>
 	);
 }
