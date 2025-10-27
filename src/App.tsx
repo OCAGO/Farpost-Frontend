@@ -5,10 +5,10 @@ import SummaryToday from "./components/summary-today/SummaryToday"
 
 function App() {
   return (
-    <div className="flex flex-col justify-between items-start">
-      {/* <SummaryToday />
+    <div className="flex justify-between items-start flex-wrap">
+      <SummaryToday />
       <ServiceList />
-      <JobsList /> */}
+      <JobsList />
       <Charts />
     </div>
   )
