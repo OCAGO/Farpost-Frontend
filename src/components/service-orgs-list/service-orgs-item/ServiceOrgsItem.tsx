@@ -47,7 +47,7 @@ function ServiceOrgsItem({ item, activeId, setActiveId }: Props) {
               <ItemInfo itemInfo = {itemInfo} color={item.name}/>
             ))}
           </ul>
-          <a className="text-right text-btn hover:text-btn-hover underline" href="#">Подробнее</a>
+          <a className="inline-block self-end text-btn hover:text-btn-hover underline" href="#">Подробнее</a>
         </div>
       </div>
     </li>
