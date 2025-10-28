@@ -9,7 +9,7 @@ interface InfoService {
     offs: InfoOffs[];
 }
 
-export interface Service {
+export interface CalendarDay {
     date: string;
     isCurrentMonth: boolean;
     services: InfoService[];

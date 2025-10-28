@@ -12,7 +12,7 @@ function ServiceOrgsList() {
   const currentList = activeTab === "services" ? SERVICES : ORGS;
 
   return (
-    <div className="flex flex-col gap-[25px]">
+    <div className="flex flex-col gap-[25px] max-w-[372px] w-full">
       <div className="flex gap-[25px]">
         <NavbarButton
           name="Коммунальные услуги"

@@ -48,7 +48,7 @@ function Charts() {
   ];
 
   return (
-    <div className="flex flex-col gap-[25px] min-w-[380px] mx-auto w-full max-w-[792px] sm:px-5">
+    <div className="flex flex-col gap-[25px] min-w-[380px] w-full max-w-[792px]">
       <h3 className="text-[21px] font-bold px-5 sm:px-0">Аварийность по жалобам</h3>
       <div className="flex flex-col gap-[15px] px-5 sm:px-[30px] pb-5 pt-[15px] border border-line sm:rounded-[10px]">
         <div className="flex gap-[30px]">

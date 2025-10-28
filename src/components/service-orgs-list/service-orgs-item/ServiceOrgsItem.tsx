@@ -28,7 +28,7 @@ function ServiceOrgsItem({ item, activeId, setActiveId }: Props) {
   return (
     <li className={`w-[332px] px-2.5 py-1.5 ${isOpen ? "bg-white rounded-[10px]" : "bg-auto"}`}>
       <button
-        className="flex w-full text-left justify-between items-center"
+        className="flex w-full text-left justify-between items-center cursor-pointer"
         onClick={() => setActiveId(isOpen ? null : id)}
       >
         <div className="flex items-center gap-5">
