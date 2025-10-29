@@ -7,7 +7,7 @@ interface Props {
 function NavbarButton({ name, isActive = false, onClick }: Props) {
   return (
     <button
-      className={`${isActive ? "bg-primary text-white" : "bg-black/1 border border-line"} font-bold p-2.5 rounded-[10px]`}
+      className={`${isActive ? "bg-primary text-white" : "bg-black/1 border border-line"} font-bold p-2.5 rounded-[10px] cursor-pointer`}
       onClick={onClick}
     >
       {name}

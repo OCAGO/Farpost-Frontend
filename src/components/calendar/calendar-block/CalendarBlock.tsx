@@ -1,14 +1,40 @@
-import { useState } from "react";
-import { CALENDAR } from "../../../data/calendar.data";
+import { useEffect, useState } from "react";
 import { COLORMAP } from "../../../data/colorMap.data";
 import type { CalendarDay } from "../../../types/calendar.type";
 import CalendarDayInfo from "../calendar-day-info/CalendarDayInfo";
 import { isCurrentMonth } from "../../../utils/checkCurrentMonth";
+import { NAMESSERVICES } from "../../../data/namesServices.data";
 
 function CalendarBlock() {
   const namesDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
   const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null);
+  const [calendar, setCalendar] = useState<CalendarDay[]>([]);
+
+  useEffect(() => {
+    async function fetchCalendar(month?: string): Promise<CalendarDay[]> {
+      let url = "/off/calendar";
+      if (month) {
+        url += `?month=${encodeURIComponent(month)}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return Array.isArray(data) ? data : data?.calendar ?? [];
+    }
+    
+    fetchCalendar("2019-10")
+      .then((data) => {
+        console.log("Данные календаря:", data);
+        setCalendar(data);
+      })
+      .catch((err) => console.error("Ошибка загрузки:", err));
+  }, []);
 
   const handleDayClick = (day: CalendarDay) => {
     setSelectedDay(prev => (prev?.date === day.date ? null : day));
@@ -23,7 +49,7 @@ function CalendarBlock() {
           ))}
         </ul>
         <ul className="flex w-[332px] flex-wrap gap-1">
-          {CALENDAR.map((day, index) => {
+          {calendar.map((day, index) => {
             const isCurrentMonthDay = isCurrentMonth(day.date);
             const isCurrentMonthSelectedDay = isCurrentMonth(selectedDay?.date || "");
 
@@ -46,7 +72,7 @@ function CalendarBlock() {
                         style={{
                           backgroundColor: service
                             ? isCurrentMonthDay
-                              ? COLORMAP[service]
+                              ? COLORMAP[NAMESSERVICES[service]]
                               : "rgba(0,0,0,0.3)"
                             : "transparent",
                         }}

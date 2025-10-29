@@ -1,11 +1,11 @@
-import type { CalendarDay } from "../../../types/calendar.type";
+import type { CalendarDay, InfoOffs } from "../../../types/calendar.type";
 import CircleIcon from "../../../assets/icons/circle.svg?react"
 import { COLORMAP } from "../../../data/colorMap.data";
-import { DAYINFO } from "../../../data/calendar.data";
 import { formatDateService } from "../../../utils/formatDateService";
 import ChevronLeftIcon from "../../../assets/icons/chevron-left.svg?react"
 import ChevronRightIcon from "../../../assets/icons/chevron-right.svg?react"
 import { useEffect, useState } from "react";
+import { NAMESSERVICES } from "../../../data/namesServices.data";
 
 interface Props {
 	day: CalendarDay | null;
@@ -14,14 +14,36 @@ interface Props {
 function CalendarDayInfo({ day }: Props) {
 	if (!day) return null;
 
-	const blackouts = DAYINFO[day.date]?.blackouts || [];
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [blackouts, setBlackouts] = useState<InfoOffs[]>([]);
 
 	useEffect(() => {
-		setCurrentIndex(0);
+		async function fetchCalendarDay(selectDate: string): Promise<InfoOffs[]> {
+			let url = "/off/calendar/day";
+			if (selectDate) {
+				url += `?date=${encodeURIComponent(selectDate)}`;
+			}
+
+			const response = await fetch(url);
+			if (!response.ok) {
+				throw new Error(`Ошибка запроса ${response.status}`);
+			}
+
+			const data = await response.json();
+
+      return Array.isArray(data) ? data : data.calendar?.calendar_day_1 ?? [];
+		}
+
+		fetchCalendarDay(day.date)
+			.then((data) => {
+				console.log("Отключения за день:", data);
+				setBlackouts(data);
+				setCurrentIndex(0);
+			})
+			.catch((err) => console.error("Ошибка загрузки:", err));
 	}, [day.date]);
 
-	const off = blackouts[currentIndex];
+	const blackout = blackouts[currentIndex];
 
 	const handlePrev = () => {
 		setCurrentIndex((prev) => (prev === 0 ? blackouts.length - 1 : prev - 1));
@@ -34,22 +56,22 @@ function CalendarDayInfo({ day }: Props) {
 	return (
 		<div className="sm:relative w-[372px] sm:h-[150px] ">
 			<div className="sm:absolute inset-0 flex flex-col items-center justify-start gap-2.5">
-				{blackouts.length === 0 || !off ? (
+				{blackouts.length === 0 || !blackout ? (
 					<div className="text-center font-bold">Нет данных об отключениях</div>
 				) : (
 					<>
 						<div className="flex flex-col gap-2.5 p-[15px] border border-line rounded-[10px] w-full">
-							<h3 className="font-bold text-[16px]">{formatDateService(off.startOff)} – {formatDateService(off.endOff)}</h3>
+							<h3 className="font-bold text-[16px]">{formatDateService(blackout.start_off)} – {formatDateService(blackout.end_off)}</h3>
 							<div className="flex justify-between">
 								<p>вид отключаемой услуги</p>
 								<div className="flex items-center gap-2 w-[130px] justify-end">
-									<CircleIcon className="size-[15px]" style={{ fill: COLORMAP[off.service] }} />
-									<p className="font-bold">{off.service}</p>
+									<CircleIcon className="size-[15px]" style={{ fill: COLORMAP[NAMESSERVICES[blackout.service]] }} />
+									<p className="font-bold">{NAMESSERVICES[blackout.service]}</p>
 								</div>
 							</div>
 							<div className="flex justify-between items-center">
 								<p className="w-[180px]">количество адресов с отключением</p>
-								<p className="font-bold">{off.amountAddresses}</p>
+								<p className="font-bold">{blackout.amount_addresses}</p>
 							</div>
 							<button className="block self-end text-btn underline hover:text-btn-hover cursor-pointer">Подробнее</button>
 						</div>

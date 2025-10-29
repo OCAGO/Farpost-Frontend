@@ -5,6 +5,7 @@ import * as complaintsHour from './complaintsHour';
 import * as complaintsDay from './complaintsDay';
 import * as complaintsWeek from './complaintsWeek';
 import * as complaintsMonth from './complaintsMonth';
+import * as calendar from './calendar';
 
 export const data = {
     streetsData,
@@ -13,5 +14,6 @@ export const data = {
     complaintsHour,
     complaintsDay,
     complaintsWeek,
-    complaintsMonth
+    complaintsMonth,
+    calendar,
 }

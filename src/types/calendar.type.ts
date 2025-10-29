@@ -1,8 +1,8 @@
-interface InfoOffs {
+export interface InfoOffs {
     service: string;
-    startOff: string;
-    endOff: string;
-    amountAddresses: number;
+    start_off: string;
+    end_off: string;
+    amount_addresses: number;
 }
 
 export interface CalendarDay {

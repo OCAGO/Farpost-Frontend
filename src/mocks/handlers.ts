@@ -33,6 +33,28 @@ export const handlers = [
       default:
         return HttpResponse.json([]);
     }
-  })
+  }),
+
+  http.get('/off/calendar', (req) => {
+    const url = new URL(req.request.url);
+    const month = url.searchParams.get('month')?.trim().toLowerCase();
+
+    if (month === '2019-10') {
+      return HttpResponse.json(data.calendar.calendar_1);
+    }
+    
+    return HttpResponse.json([]);
+  }),
+
+  http.get('/off/calendar/day', (req) => {
+    const url = new URL(req.request.url);
+    const date = url.searchParams.get('date')?.trim().toLowerCase();
+
+    if (date === '2019-10-01') {
+      return HttpResponse.json(data.calendar.calendar_day_1);
+    }
+
+    return HttpResponse.json([]);
+  }),
 
 ];
