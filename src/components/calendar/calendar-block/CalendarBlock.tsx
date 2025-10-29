@@ -3,6 +3,7 @@ import { CALENDAR } from "../../../data/calendar.data";
 import { COLORMAP } from "../../../data/colorMap.data";
 import type { CalendarDay } from "../../../types/calendar.type";
 import CalendarDayInfo from "../calendar-day-info/CalendarDayInfo";
+import { isCurrentMonth } from "../../../utils/checkCurrentMonth";
 
 function CalendarBlock() {
   const namesDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
@@ -10,7 +11,7 @@ function CalendarBlock() {
   const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null);
 
   const handleDayClick = (day: CalendarDay) => {
-    setSelectedDay(day);
+    setSelectedDay(prev => (prev?.date === day.date ? null : day));
   };
 
   return (
@@ -22,41 +23,43 @@ function CalendarBlock() {
           ))}
         </ul>
         <ul className="flex w-[332px] flex-wrap gap-1">
-          {CALENDAR.map((day, index) => (
-            <li key={index}>
-              <button
-                onClick={() => handleDayClick(day)}
-                className={`flex flex-col items-center w-11 h-[63px] text-[25px] font-bold rounded-[10px] justify-center cursor-pointer hover:bg-[#FFCBBB] hover:border hover:border-primary hover:text-[#FF5E2C]
-      ${selectedDay?.date === day.date && selectedDay?.isCurrentMonth === day.isCurrentMonth
-                    ? "border border-primary text-[#FF5E2C] bg-[#FFCBBB]"
-                    : `${day.isCurrentMonth ? "text-black" : "text-black/30"} bg-line`}`}
-              >
-                <span>{day.date}</span>
+          {CALENDAR.map((day, index) => {
+            const isCurrentMonthDay = isCurrentMonth(day.date);
+            const isCurrentMonthSelectedDay = isCurrentMonth(selectedDay?.date || "");
 
-                <div className="flex gap-1 mt-1">
-                  {(day.services.length > 0 ? day.services : [null]).map((service, i) => (
-                    <span
-                      key={i}
-                      className="block w-1.5 h-1.5"
-                      style={{
-                        backgroundColor: service
-                          ? day.isCurrentMonth
-                            ? COLORMAP[service.category]
-                            : "rgba(0,0,0,0.3)"
-                          : "transparent",
-                      }}
-                    ></span>
-                  ))}
-                </div>
-              </button>
+            return (
+              <li key={index}>
+                <button
+                  onClick={() => handleDayClick(day)}
+                  className={`flex flex-col items-center w-11 h-[63px] text-[25px] font-bold rounded-[10px] justify-center cursor-pointer hover:bg-[#FFCBBB] hover:border hover:border-primary hover:text-[#FF5E2C]
+      ${selectedDay?.date === day.date && isCurrentMonthSelectedDay === isCurrentMonthDay
+                      ? "border border-primary text-[#FF5E2C] bg-[#FFCBBB]"
+                      : `${isCurrentMonthDay ? "text-black" : "text-black/30"} bg-line`}`}
+                >
+                  <span>{Number(day.date.split("-")[2])}</span>
 
-            </li>
-          ))}
+                  <div className="flex gap-1 mt-1">
+                    {(day.services.length > 0 ? day.services : [null]).map((service, i) => (
+                      <span
+                        key={i}
+                        className="block w-1.5 h-1.5"
+                        style={{
+                          backgroundColor: service
+                            ? isCurrentMonthDay
+                              ? COLORMAP[service]
+                              : "rgba(0,0,0,0.3)"
+                            : "transparent",
+                        }}
+                      ></span>
+                    ))}
+                  </div>
+                </button>
+              </li>
+            )
+          })}
         </ul>
       </div>
-      {selectedDay && selectedDay.services.length > 0 && (
-        <CalendarDayInfo day={selectedDay} />
-      )}
+      <CalendarDayInfo day={selectedDay} />
     </div>
   );
 }

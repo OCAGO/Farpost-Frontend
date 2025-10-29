@@ -6,15 +6,20 @@ import SummaryToday from "./components/summary-today/SummaryToday"
 
 function App() {
   return (
-    <div className="flex flex-wrap gap-5 px-5 xl:px-25 justify-between">
-      <SummaryToday />
-      <Calendar />
-      <ServiceList />
-      <Charts />
-      <JobsList />
-    </div>
-  );
-}
+    <div className="flex flex-row gap-15">
 
+      <div className="flex gap-[25px] flex-col">
+        <SummaryToday />
+        <Calendar />
+      </div>
+
+      <div className="flex flex-wrap justify-between gap-y-[30px]">
+        <ServiceList />
+        <JobsList />
+        <Charts />
+      </div>
+    </div>
+  )
+}
 
 export default App

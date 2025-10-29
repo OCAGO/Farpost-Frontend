@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { DATADAY, DATAHOUR, DATAMONTH, DATAWEEK } from "../../data/charts.data";
 import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import ChartButton from "./nav-button/ChartButton";
+import type { ChartDataItem } from "../../types/chart.type";
 
 function Charts() {
-  const [period, setPeriod] = useState("hour");
+  const [period, setPeriod] = useState<"hour" | "day" | "week" | "month">("hour");
   const [aspect, setAspect] = useState(2.5);
+  const [chartData, setChartData] = useState<ChartDataItem[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -18,18 +19,34 @@ function Charts() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const chartData = {
-    hour: DATAHOUR,
-    day: DATADAY,
-    week: DATAWEEK,
-    month: DATAMONTH,
-  }[period];
+  useEffect(() => {
+    async function fetchComplaints(period: "hour" | "day" | "week" | "month", curr_time?: string) {
+
+      let url = `/off/complaints?period=${encodeURIComponent(period)}`;
+      if (curr_time) url += `&curr_time=${encodeURIComponent(curr_time)}`;
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`);
+
+      const data = await response.json();
+
+      return Array.isArray(data) ? data : data.complaintsData ?? [];
+    }
+
+    fetchComplaints(period)
+      .then((data) => {
+        console.log("Обновлённые данные графика:", data);
+        setChartData(data);
+      })
+      .catch((err) => console.error("Ошибка загрузки:", err))
+
+  }, [period]);
 
   let xAxisInterval = {
     hour: 0,
     day: 1,
     week: 0,
-    month: 1,
+    month: 3,
   }[period];
 
   if (period === "day" && window.innerWidth < 768) {
@@ -37,7 +54,7 @@ function Charts() {
   };
 
   if (period === "month" && window.innerWidth < 768) {
-    xAxisInterval = 2;
+    xAxisInterval = 5;
   };
 
   const buttons = [
@@ -48,19 +65,19 @@ function Charts() {
   ];
 
   return (
-    <div className="flex flex-col gap-[25px] min-w-[380px] w-full max-w-[792px]">
+    <div className="flex flex-col gap-[25px] min-w-[380px] w-full max-w-[800px] sm:mr-5 xl:mr-25">
       <h3 className="text-[21px] font-bold px-5 sm:px-0">Аварийность по жалобам</h3>
       <div className="flex flex-col gap-[15px] px-5 sm:px-[30px] pb-5 pt-[15px] border border-line sm:rounded-[10px]">
         <div className="flex gap-[30px]">
           {buttons.map(({ key, label }) => (
-            <ChartButton key={key} title={label} active={period === key} onClick={() => setPeriod(key)} />
+            <ChartButton key={key} title={label} active={period === key} onClick={() => setPeriod(key as any)} />
           ))}
         </div>
 
         <div className="w-full max-w-200 flex flex-col gap-2.5">
           <ResponsiveContainer width="100%" aspect={aspect}>
-            <LineChart data={chartData} margin={{ left: 20, right: 20 }}>
-              <XAxis dataKey="name" interval={xAxisInterval} />
+            <LineChart data={chartData} margin={{ left: 50, right: 50, top: 20 }}>
+              <XAxis dataKey="time" interval={xAxisInterval} />
               <Tooltip />
               <Legend verticalAlign="bottom" height={36} />
               <Line type="linear" dataKey="electricity" stroke="#9575CD" name="Электричество" activeDot={{ r: 6 }} />

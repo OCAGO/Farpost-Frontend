@@ -1,18 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavbarButton from "./navbar-button/NavbarButton";
 import ServiceOrgsItem from "./service-orgs-item/ServiceOrgsItem";
-import { SERVICES } from "../../data/services.data";
-import { ORGS } from "../../data/orgs.data";
-
+import type { Organization } from "../../types/organization.types";
+import type { Service } from "../../types/service.types";
 
 function ServiceOrgsList() {
   const [activeTab, setActiveTab] = useState<"services" | "orgs">("services");
-  const [activeId, setActiveId] = useState<number | null>(null);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [orgs, setOrgs] = useState<Organization[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
 
-  const currentList = activeTab === "services" ? SERVICES : ORGS;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const currentList = activeTab === "services" ? services : orgs;
+
+  useEffect(() => {
+    async function fetchOrganizations(curr_time?: string): Promise<Organization[]> {
+      let url = "/off/orgs";
+      if (curr_time) {
+        url += `?curr_time=${encodeURIComponent(curr_time)}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Raw organizations data:", data);
+
+      return Array.isArray(data) ? data : data.organizations ?? [];
+    }
+
+    async function fetchServices(curr_time?: string): Promise<Service[]> {
+      let url = "/off/blackouts";
+      if (curr_time) {
+        url += `?curr_time=${encodeURIComponent(curr_time)}`;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Ошибка запроса: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Raw services data:", data);
+
+      return Array.isArray(data) ? data : data.services ?? [];
+    }
+
+    setIsLoading(true);
+
+    if (activeTab === "orgs") {
+      fetchOrganizations()
+        .then(setOrgs)
+        .catch(console.error)
+        .finally(() => setIsLoading(false));
+    } else {
+      fetchServices()
+        .then(setServices)
+        .catch(console.error)
+        .finally(() => setIsLoading(false));
+    }
+  }, [activeTab]);
 
   return (
-    <div className="flex flex-col gap-[25px] max-w-[372px] w-full">
+    <div className="flex flex-col gap-[25px] max-w-[372px] w-full mx-5 sm:mx-0">
       <div className="flex gap-[25px]">
         <NavbarButton
           name="Коммунальные услуги"
@@ -27,16 +80,21 @@ function ServiceOrgsList() {
       </div>
 
       <div className="p-5 border border-line rounded-[10px] bg-black/1">
-        <ul className="flex flex-col gap-5">
-          {currentList.map((item) => (
-            <ServiceOrgsItem
-              key={item.id}
-              item={item}
-              activeId={activeId}
-              setActiveId={setActiveId}
-            />
-          ))}
-        </ul>
+        {currentList.length === 0 ? (
+          <div className="text-gray-500">Нет данных</div>
+        ) : (
+          <ul className="flex flex-col gap-5">
+            {isLoading && <div>Загрзка данных</div>}
+            {currentList.map((item) => (
+              <ServiceOrgsItem
+                key={"type" in item ? item.type : item.name}
+                item={item}
+                activeItem={activeItem}
+                setActiveId={setActiveItem}
+              />
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
