@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import ChartButton from "./nav-button/ChartButton";
 import type { ChartDataItem } from "../../types/chart.type";
 
@@ -76,8 +76,9 @@ function Charts() {
 
         <div className="w-full max-w-200 flex flex-col gap-2.5">
           <ResponsiveContainer width="100%" aspect={aspect}>
-            <LineChart data={chartData} margin={{ left: 50, right: 50, top: 20 }}>
+            <LineChart data={chartData} margin={{ right: 50, top: 20 }}>
               <XAxis dataKey="time" interval={xAxisInterval} />
+              <YAxis />
               <Tooltip />
               <Legend verticalAlign="bottom" height={36} />
               <Line type="linear" dataKey="electricity" stroke="#9575CD" name="Электричество" activeDot={{ r: 6 }} />
