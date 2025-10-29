@@ -1,11 +1,11 @@
 import type { CalendarDay, InfoOffs } from "../../../types/calendar.type";
 import CircleIcon from "../../../assets/icons/circle.svg?react"
-import { COLORMAP } from "../../../data/colorMap.data";
+import { COLORMAP } from "../../../other-data/colorMap.data";
 import { formatDateService } from "../../../utils/formatDateService";
 import ChevronLeftIcon from "../../../assets/icons/chevron-left.svg?react"
 import ChevronRightIcon from "../../../assets/icons/chevron-right.svg?react"
 import { useEffect, useState } from "react";
-import { NAMESSERVICES } from "../../../data/namesServices.data";
+import { NAMESSERVICES } from "../../../other-data/namesServices.data";
 
 interface Props {
 	day: CalendarDay | null;

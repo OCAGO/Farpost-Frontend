@@ -9,7 +9,3 @@ export interface CalendarDay {
     date: string;
     services: string[];
 }
-
-export interface DayInfo {
-    blackouts: InfoOffs[];
-}

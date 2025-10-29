@@ -1,5 +1,5 @@
 import Circle from "../../../assets/icons/circle.svg?react";
-import { COLORMAP } from "../../../data/colorMap.data";
+import { COLORMAP } from "../../../other-data/colorMap.data";
 import type { Info } from "../../../types/service.types";
 
 interface Props {

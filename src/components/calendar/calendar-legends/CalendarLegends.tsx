@@ -1,4 +1,4 @@
-import { COLORMAP } from "../../../data/colorMap.data";
+import { COLORMAP } from "../../../other-data/colorMap.data";
 
 function CalendarLegends() {
 	const namesLegends = [

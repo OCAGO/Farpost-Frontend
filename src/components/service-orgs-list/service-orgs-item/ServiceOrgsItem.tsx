@@ -3,9 +3,9 @@ import ChevronDownIcon from "../../../assets/icons/chevron-down.svg?react";
 import ChevronUpIcon from "../../../assets/icons/chevron-up.svg?react";
 import type { Organization } from "../../../types/organization.types";
 import type { Service } from "../../../types/service.types";
-import { ICONMAP } from "../../../data/iconMap.data";
-import { NAMESSERVICES } from "../../../data/namesServices.data";
-import { COLORMAP } from "../../../data/colorMap.data";
+import { ICONMAP } from "../../../other-data/iconMap.data";
+import { NAMESSERVICES } from "../../../other-data/namesServices.data";
+import { COLORMAP } from "../../../other-data/colorMap.data";
 
 interface Props {
   item: Service | Organization;

@@ -1,4 +1,4 @@
-import { DATAJOBS } from "../../data/job.data";
+import { DATAJOBS } from "../../other-data/job.data";
 import JobsItem from "./jobs-item/JobsItem";
 
 function JobsList() {

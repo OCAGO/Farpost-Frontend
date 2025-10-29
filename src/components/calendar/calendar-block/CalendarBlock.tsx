@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { COLORMAP } from "../../../data/colorMap.data";
+import { COLORMAP } from "../../../other-data/colorMap.data";
 import type { CalendarDay } from "../../../types/calendar.type";
 import CalendarDayInfo from "../calendar-day-info/CalendarDayInfo";
 import { isCurrentMonth } from "../../../utils/checkCurrentMonth";
-import { NAMESSERVICES } from "../../../data/namesServices.data";
+import { NAMESSERVICES } from "../../../other-data/namesServices.data";
+import { checkIsToday } from "../../../utils/checkIsToday";
 
 function CalendarBlock() {
   const namesDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
@@ -52,6 +53,7 @@ function CalendarBlock() {
           {calendar.map((day, index) => {
             const isCurrentMonthDay = isCurrentMonth(day.date);
             const isCurrentMonthSelectedDay = isCurrentMonth(selectedDay?.date || "");
+            const isTodayDay = checkIsToday(day.date);
 
             return (
               <li key={index}>
@@ -60,6 +62,7 @@ function CalendarBlock() {
                   className={`flex flex-col items-center w-11 h-[63px] text-[25px] font-bold rounded-[10px] justify-center cursor-pointer hover:bg-[#FFCBBB] hover:border hover:border-primary hover:text-[#FF5E2C]
       ${selectedDay?.date === day.date && isCurrentMonthSelectedDay === isCurrentMonthDay
                       ? "border border-primary text-[#FF5E2C] bg-[#FFCBBB]"
+                      : isTodayDay ? "border border-[#FF5E2C] bg-[#FFF0E8] shadow-[0_0_4px_4px_#FFF0E8]"
                       : `${isCurrentMonthDay ? "text-black" : "text-black/30"} bg-line`}`}
                 >
                   <span>{Number(day.date.split("-")[2])}</span>
