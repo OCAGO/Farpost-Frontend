@@ -13,7 +13,7 @@ function App() {
         <Calendar />
       </div>
 
-      <div className="flex flex-wrap justify-between gap-y-[30px]">
+      <div className="flex flex-wrap gap-x-15 gap-y-[30px]">
         <ServiceList />
         <JobsList />
         <Charts />

@@ -51,18 +51,17 @@ function ServiceOrgsList() {
 
     setIsLoading(true);
 
-    if (activeTab === "orgs") {
       fetchOrganizations()
         .then(setOrgs)
         .catch(console.error)
         .finally(() => setIsLoading(false));
-    } else {
+
       fetchServices()
         .then(setServices)
         .catch(console.error)
         .finally(() => setIsLoading(false));
-    }
-  }, [activeTab]);
+
+  }, []);
 
   return (
     <div className="flex flex-col gap-[25px] max-w-[372px] w-full mx-5 sm:mx-0">

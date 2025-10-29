@@ -2,15 +2,15 @@ import { http, HttpResponse } from 'msw';
 import { data } from './data/data';
 
 export const handlers = [
-  http.get('/off/search', (req) => {
+  http.get('/off/search', () => {
     return HttpResponse.json(data.streetsData.streets_1);
   }),
   
-  http.get('/off/blackouts', (req) => {
+  http.get('/off/blackouts', () => {
     return HttpResponse.json(data.commercialServices.commercialServices_1);
   }),
 
-  http.get('/off/orgs', (req) => {
+  http.get('/off/orgs', () => {
     return HttpResponse.json(data.organizations.organizations_1);
   }),
 

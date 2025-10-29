@@ -1,4 +1,4 @@
-import type { Organization } from "../../types/org.types";
+import type { Organization } from "../../types/organization.types";
 
 // Организации
 export const organizations_1: Organization[] = [
