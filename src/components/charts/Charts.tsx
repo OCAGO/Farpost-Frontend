@@ -22,7 +22,8 @@ function Charts() {
   useEffect(() => {
     async function fetchComplaints(period: "hour" | "day" | "week" | "month", curr_time?: string) {
 
-      let url = `/off/complaints?period=${encodeURIComponent(period)}`;
+      const baseUrl = import.meta.env.VITE_API_URL;
+      let url = `${baseUrl}/off/complaints?period=${encodeURIComponent(period)}`;
       if (curr_time) url += `&curr_time=${encodeURIComponent(curr_time)}`;
 
       const response = await fetch(url);

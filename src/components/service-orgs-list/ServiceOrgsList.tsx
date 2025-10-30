@@ -16,7 +16,8 @@ function ServiceOrgsList() {
 
   useEffect(() => {
     async function fetchOrganizations(curr_time?: string): Promise<Organization[]> {
-      let url = "/off/orgs";
+      const baseUrl = import.meta.env.VITE_API_URL;
+      let url = `${baseUrl}/off/orgs`;
       if (curr_time) {
         url += `?curr_time=${encodeURIComponent(curr_time)}`;
       }
@@ -33,7 +34,8 @@ function ServiceOrgsList() {
     }
 
     async function fetchServices(curr_time?: string): Promise<Service[]> {
-      let url = "/off/blackouts";
+      const baseUrl = import.meta.env.VITE_API_URL;
+      let url = `${baseUrl}/off/blackouts`;
       if (curr_time) {
         url += `?curr_time=${encodeURIComponent(curr_time)}`;
       }

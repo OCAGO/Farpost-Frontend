@@ -19,7 +19,8 @@ function CalendarDayInfo({ day }: Props) {
 
 	useEffect(() => {
 		async function fetchCalendarDay(selectDate: string): Promise<InfoOffs[]> {
-			let url = "/off/calendar/day";
+			const baseUrl = import.meta.env.VITE_API_URL;
+			let url = `${baseUrl}/off/calendar/day`;
 			if (selectDate) {
 				url += `?date=${encodeURIComponent(selectDate)}`;
 			}
@@ -73,7 +74,7 @@ function CalendarDayInfo({ day }: Props) {
 								<p className="w-[180px]">количество адресов с отключением</p>
 								<p className="font-bold">{blackout.amount_addresses}</p>
 							</div>
-							<button className="block self-end text-btn underline hover:text-btn-hover cursor-pointer">Подробнее</button>
+							<a className="block self-end text-btn underline hover:text-btn-hover cursor-pointer" href="#">Подробнее</a>
 						</div>
 
 						{blackouts.length > 1 && (

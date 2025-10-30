@@ -14,7 +14,8 @@ function CalendarBlock() {
 
   useEffect(() => {
     async function fetchCalendar(month?: string): Promise<CalendarDay[]> {
-      let url = "/off/calendar";
+      const baseUrl = import.meta.env.VITE_API_URL;
+      let url = `${baseUrl}/off/calendar`;
       if (month) {
         url += `?month=${encodeURIComponent(month)}`;
       }
