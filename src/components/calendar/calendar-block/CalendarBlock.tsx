@@ -13,11 +13,20 @@ function CalendarBlock() {
   const [calendar, setCalendar] = useState<CalendarDay[]>([]);
 
   useEffect(() => {
-    async function fetchCalendar(month?: string): Promise<CalendarDay[]> {
+    async function fetchCalendar(month?: string, curr_time?: string): Promise<CalendarDay[]> {
       const baseUrl = import.meta.env.VITE_API_URL;
       let url = `${baseUrl}/off/calendar`;
+      const params = new URLSearchParams();
+
       if (month) {
-        url += `?month=${encodeURIComponent(month)}`;
+        params.append("month", month);
+      }
+      if (curr_time) {
+        params.append("curr_time", curr_time);
+      }
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
       }
 
       const response = await fetch(url);
@@ -29,14 +38,17 @@ function CalendarBlock() {
 
       return Array.isArray(data) ? data : data?.calendar ?? [];
     }
-    
-    fetchCalendar("2019-10")
+
+    const currTime = new Date().toISOString();
+
+    fetchCalendar("2019-10", currTime)
       .then((data) => {
         console.log("Данные календаря:", data);
         setCalendar(data);
       })
       .catch((err) => console.error("Ошибка загрузки:", err));
   }, []);
+
 
   const handleDayClick = (day: CalendarDay) => {
     setSelectedDay(prev => (prev?.date === day.date ? null : day));
@@ -64,7 +76,7 @@ function CalendarBlock() {
       ${selectedDay?.date === day.date && isCurrentMonthSelectedDay === isCurrentMonthDay
                       ? "border border-primary text-[#FF5E2C] bg-[#FFCBBB]"
                       : isTodayDay ? "border border-[#FF5E2C] bg-[#FFF0E8] shadow-[0_0_4px_4px_#FFF0E8]"
-                      : `${isCurrentMonthDay ? "text-black" : "text-black/30"} bg-line`}`}
+                        : `${isCurrentMonthDay ? "text-black" : "text-black/30"} bg-line`}`}
                 >
                   <span>{Number(day.date.split("-")[2])}</span>
 

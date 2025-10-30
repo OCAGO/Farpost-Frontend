@@ -1,7 +1,7 @@
 import Calendar from "./components/calendar/Calendar"
 import Charts from "./components/charts/Charts"
 import JobsList from "./components/jobs-list/JobsList"
-import ServiceList from "./components/service-orgs-list/ServiceOrgsList"
+import ServiceOrgsList from "./components/service-orgs-list/ServiceOrgsList"
 import SummaryToday from "./components/summary-today/SummaryToday"
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       </div>
 
       <div className="flex flex-wrap gap-x-15 gap-y-[30px]">
-        <ServiceList />
+        <ServiceOrgsList />
         <JobsList />
         <Charts />
       </div>

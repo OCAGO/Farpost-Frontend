@@ -21,27 +21,27 @@ function Charts() {
 
   useEffect(() => {
     async function fetchComplaints(period: "hour" | "day" | "week" | "month", curr_time?: string) {
-
       const baseUrl = import.meta.env.VITE_API_URL;
       let url = `${baseUrl}/off/complaints?period=${encodeURIComponent(period)}`;
       if (curr_time) url += `&curr_time=${encodeURIComponent(curr_time)}`;
-
+  
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Ошибка запроса: ${response.status}`);
-
+  
       const data = await response.json();
-
+  
       return Array.isArray(data) ? data : data.complaintsData ?? [];
     }
-
-    fetchComplaints(period)
+  
+    const currTime = new Date().toISOString();
+  
+    fetchComplaints(period, currTime)
       .then((data) => {
         console.log("Обновлённые данные графика:", data);
         setChartData(data);
       })
-      .catch((err) => console.error("Ошибка загрузки:", err))
-
-  }, [period]);
+      .catch((err) => console.error("Ошибка загрузки:", err));
+  }, [period]);  
 
   let xAxisInterval = {
     hour: 0,
