@@ -66,9 +66,9 @@ function Charts() {
   ];
 
   return (
-    <div className="flex flex-col gap-[25px] min-w-[380px] w-full max-w-[800px] sm:mr-5 xl:mr-25">
-      <h3 className="text-[21px] font-bold px-5 sm:px-0">Аварийность по жалобам</h3>
-      <div className="flex flex-col gap-[15px] px-5 sm:px-[30px] pb-5 pt-[15px] border border-line sm:rounded-[10px]">
+    <div className="flex flex-col gap-[25px] min-w-[380px] w-full max-w-[800px]">
+      <h3 className="text-[21px] font-bold px-5 sm:px-0 mx-5 sm:mx-0">Аварийность по жалобам</h3>
+      <div className="flex flex-col gap-[15px] px-5 sm:px-[30px] pb-5 pt-[15px] border border-line rounded-[10px]">
         <div className="flex gap-[30px]">
           {buttons.map(({ key, label }) => (
             <ChartButton key={key} title={label} active={period === key} onClick={() => setPeriod(key as any)} />

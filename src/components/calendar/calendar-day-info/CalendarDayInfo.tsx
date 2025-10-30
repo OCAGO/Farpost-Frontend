@@ -55,7 +55,7 @@ function CalendarDayInfo({ day }: Props) {
 	};
 
 	return (
-		<div className="sm:relative w-[372px] sm:h-[150px] ">
+		<div className="sm:relative w-[372px] sm:h-[150px] mb-10">
 			<div className="sm:absolute inset-0 flex flex-col items-center justify-start gap-2.5">
 				{blackouts.length === 0 || !blackout ? (
 					<div className="text-center font-bold">Нет данных об отключениях</div>
